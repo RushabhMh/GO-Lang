@@ -33,3 +33,24 @@ Goroutines in Go and traditional threads in other programming languages like Jav
 
 ### Summary
 Goroutines offer a lightweight, efficient, and easy-to-use concurrency model compared to traditional threads. They provide better performance and scalability, especially in applications that require managing a large number of concurrent tasks, such as web servers or real-time data processing systems.
+
+
+
+Type Assertions
+Type assertions are used to extract the underlying value of an interface type. This is not exactly a type conversion, but it's related and often used in Go.
+
+package main
+
+import "fmt"
+
+func main() {
+    var i interface{} = "hello"
+
+    // Type assertion
+    s, ok := i.(string)
+    if ok {
+        fmt.Printf("String: %s\n", s)
+    } else {
+        fmt.Println("Type assertion failed")
+    }
+}
