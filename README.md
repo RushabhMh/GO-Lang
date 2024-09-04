@@ -40,9 +40,7 @@ Type Assertions
 Type assertions are used to extract the underlying value of an interface type. This is not exactly a type conversion, but it's related and often used in Go.
 
 package main
-
 import "fmt"
-
 func main() {
     var i interface{} = "hello"
 
