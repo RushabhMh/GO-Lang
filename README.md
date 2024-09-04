@@ -39,13 +39,15 @@ Goroutines offer a lightweight, efficient, and easy-to-use concurrency model com
 Type Assertions
 Type assertions are used to extract the underlying value of an interface type. This is not exactly a type conversion, but it's related and often used in Go.
 
+```
+package main
 
+import "fmt"
+
+func main() {
+    var i interface{} = "hello"
 
     // Type assertion
-    package main
-   import "fmt"
-   func main() {
-     var i interface{} = "hello"
     s, ok := i.(string)
     if ok {
         fmt.Printf("String: %s\n", s)
@@ -53,3 +55,4 @@ Type assertions are used to extract the underlying value of an interface type. T
         fmt.Println("Type assertion failed")
     }
 }
+```
