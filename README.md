@@ -57,9 +57,9 @@ func main() {
 }
 ```
 
-
+**
 Types of inter process communication using channels in golang:-
-
+**
 
 In Go, inter-process communication (IPC) using channels is a powerful feature that allows goroutines to communicate with each other safely and efficiently. Channels provide a way to send and receive values between goroutines, ensuring synchronization and avoiding race conditions.
 
@@ -263,9 +263,134 @@ func main() {
 } 
 ```
 
-Summary
+**Summary**
 Unbuffered Channels: Synchronous communication, requires both sender and receiver to be ready.
 Buffered Channels: Asynchronous communication, allows storing a limited number of values.
 Channel Operations: Sending, receiving, closing channels, and using the select statement.
 Use Cases: Worker pools and pipeline patterns.
 Channels in Go provide a powerful mechanism for goroutines to communicate and synchronize, enabling the development of concurrent and parallel programs.
+
+
+In Go, you can interrupt or cancel a goroutine using the context package. The context package provides a way to manage deadlines, cancellation signals, and other request-scoped values across API boundaries and between processes. This is particularly useful for gracefully shutting down goroutines.
+
+**Using context to Cancel a Goroutine**
+Here's a step-by-step guide on how to use context to cancel a goroutine:
+
+Create a Context with Cancellation: Use context.WithCancel to create a context that can be canceled.
+Pass the Context to the Goroutine: Pass the context to the goroutine so it can listen for cancellation signals.
+Cancel the Context: Call the cancel function to signal the goroutine to stop.
+
+
+```
+package main
+
+import (
+    "context"
+    "fmt"
+    "time"
+)
+
+func main() {
+    // Create a context with cancellation
+    ctx, cancel := context.WithCancel(context.Background())
+
+    // Start a goroutine that does some work
+    go func(ctx context.Context) {
+        for {
+            select {
+            case <-ctx.Done():
+                fmt.Println("Goroutine exiting:", ctx.Err())
+                return
+            default:
+                // Simulate some work
+                fmt.Println("Goroutine working...")
+                time.Sleep(500 * time.Millisecond)
+            }
+        }
+    }(ctx)
+
+    // Let the goroutine work for 2 seconds
+    time.Sleep(2 * time.Second)
+
+    // Cancel the context to signal the goroutine to stop
+    cancel()
+
+    // Give the goroutine some time to exit
+    time.Sleep(1 * time.Second)
+}
+```
+
+Summary
+Context with Cancellation: Use context.WithCancel to create a context that can be canceled.
+Goroutine: Pass the context to the goroutine and check the context's Done channel to detect cancellation.
+Cancel Function: Call the cancel function to signal the goroutine to stop its work.
+Using the context package to manage goroutine lifecycles helps ensure that goroutines can exit gracefully when they are no longer needed, preventing resource leaks and improving the robustness of your concurrent programs.
+
+
+**
+What are goroutine leaks
+**
+
+
+Goroutine leaks occur when goroutines are started but never terminate, leading to resource exhaustion and potential application crashes. This is analogous to memory leaks in other programming languages, where resources are allocated but never released. In the context of Go, goroutine leaks can cause the application to consume excessive memory and CPU resources, leading to degraded performance or even failure.
+
+**Common Causes of Goroutine Leaks**
+Blocking Operations:
+
+Goroutines waiting indefinitely on channels, mutexes, or other synchronization primitives can cause leaks.
+Unterminated Loops:
+
+Infinite loops or loops that never reach a termination condition can cause goroutines to run indefinitely.
+Unreceived Channel Messages:
+
+If a goroutine sends messages on a channel but no other goroutine is receiving them, the sending goroutine can become blocked.
+Forgotten Goroutines:
+
+Starting a goroutine without a clear plan for its termination can lead to leaks, especially if the goroutine is supposed to run for a limited time or under certain conditions.
+Example of a Goroutine Leak
+
+```
+package main
+
+import (
+    "fmt"
+    "time"
+)
+
+func main() {
+    ch := make(chan int)
+
+    go func() {
+        for {
+            ch <- 1 // This will block forever if no one receives from the channel
+        }
+    }()
+
+    time.Sleep(2 * time.Second)
+    fmt.Println("Main function completed")
+}
+```
+
+n this example, the goroutine sending messages to the channel ch will block indefinitely because there is no receiver.
+
+Detecting and Preventing Goroutine Leaks
+Use Context for Cancellation:
+
+1. Use the context package to manage the lifecycle of goroutines and ensure they can be canceled when no longer needed.
+
+Check for Blocking Operations:
+
+1. Ensure that all channel sends have corresponding receives and vice versa.
+2. Use buffered channels if necessary to prevent blocking.
+Monitor Goroutine Count:
+
+3. Use tools like runtime.NumGoroutine() to monitor the number of active goroutines and detect unexpected increases.
+
+4. Use Proper Synchronization:
+Ensure that all synchronization primitives (e.g., channels, mutexes) are used correctly to avoid deadlocks and blocking.
+
+**Summary**
+Goroutine Leaks: Occur when goroutines are started but never terminate, leading to resource exhaustion.
+Common Causes: Blocking operations, unterminated loops, unreceived channel messages, and forgotten goroutines.
+Detection and Prevention: Use the context package for cancellation, check for blocking operations, monitor goroutine count, and use proper synchronization.
+By following these practices, you can avoid goroutine leaks and ensure that your Go applications are efficient and reliable.
