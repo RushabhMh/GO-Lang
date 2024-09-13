@@ -12,38 +12,42 @@ var counter int
 
 func printEven(ctx context.Context, even, odd chan bool) {
 
-	for i := 0; i < 100; i += 2 {
-		<-even
-		fmt.Println("Even :- ", i)
-		time.Sleep(500 * time.Millisecond)
-		odd <- true
+	for {
 
+		select {
+
+		case <-ctx.Done():
+			fmt.Println("Stopping even channel")
+			time.Sleep(800 * time.Millisecond)
+			return
+		default:
+			<-even
+			fmt.Println("Even :- ", counter)
+			counter++
+			time.Sleep(800 * time.Millisecond)
+			odd <- true
+		}
 	}
 
-	select {
-
-	case <-ctx.Done():
-		fmt.Println("Stopping channel")
-		return
-	}
 }
 
 func printOdd(ctx context.Context, even, odd chan bool) {
 
-	for i := 1; i < 100; i += 2 {
-		<-odd
-		fmt.Println("Odd:- ", i)
-		time.Sleep(500 * time.Millisecond)
-		even <- true
+	for {
 
+		select {
+
+		case <-ctx.Done():
+			fmt.Println("Stopping odd channel")
+			return
+		default:
+			<-odd
+			fmt.Println("Odd:- ", counter)
+			counter++
+			even <- true
+		}
 	}
 
-	select {
-
-	case <-ctx.Done():
-		fmt.Println("Stopping channel")
-		return
-	}
 }
 
 func main() {
@@ -55,8 +59,11 @@ func main() {
 	go printOdd(ctx, even, odd)
 	even <- true
 
-	time.Sleep(2 * time.Second)
+	time.Sleep(5 * time.Second)
 
 	cancel()
 
+	time.Sleep(2 * time.Second)
+
+	fmt.Println("Main done")
 }
