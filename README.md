@@ -585,7 +585,7 @@ Polymorphism: The animals slice holds different types (Dog and Cat) because both
 Empty Interface (interface{})
 The empty interface interface{} is special because it can hold values of any type. It's often used when you need a function that can accept or return values of any type, similar to Object in other languages.
 
-
+```
 package main
 
 import "fmt"
@@ -599,6 +599,7 @@ func main() {
 	printValue("Hello, Go") // Prints a string
 	printValue(3.14)        // Prints a float
 }
+```
 
 **Type Assertion**
 
