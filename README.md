@@ -1,4 +1,4 @@
-Go (Golang) Fundamentals
+**Go (Golang) Fundamentals**
 
 
 Goroutines in Go and traditional threads in other programming languages like Java, C++, or Python are both used for concurrent execution, but they differ significantly in their design, resource consumption, and behavior. Here are the key differences:
