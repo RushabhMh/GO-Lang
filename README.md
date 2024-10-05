@@ -36,7 +36,7 @@ Goroutines offer a lightweight, efficient, and easy-to-use concurrency model com
 
 
 
-Type Assertions
+**Type Assertions**
 Type assertions are used to extract the underlying value of an interface type. This is not exactly a type conversion, but it's related and often used in Go.
 
 ```
@@ -63,7 +63,7 @@ Types of inter process communication using channels in golang:-
 
 In Go, inter-process communication (IPC) using channels is a powerful feature that allows goroutines to communicate with each other safely and efficiently. Channels provide a way to send and receive values between goroutines, ensuring synchronization and avoiding race conditions.
 
-Types of Channels
+** Types of Channels **
 Unbuffered Channels:
 
 1. An unbuffered channel is a channel with no capacity. It requires both a sender and a receiver to be ready at the same time for the communication to occur.
@@ -180,8 +180,9 @@ func main() {
 }
 ```
 
-Use Cases
-1. Worker Pools:
+**Use Cases**
+
+**1. Worker Pools:**
 
 Channels can be used to implement worker pools, where multiple worker goroutines process tasks from a shared channel.
 
@@ -274,6 +275,7 @@ Channels in Go provide a powerful mechanism for goroutines to communicate and sy
 In Go, you can interrupt or cancel a goroutine using the context package. The context package provides a way to manage deadlines, cancellation signals, and other request-scoped values across API boundaries and between processes. This is particularly useful for gracefully shutting down goroutines.
 
 **Using context to Cancel a Goroutine**
+
 Here's a step-by-step guide on how to use context to cancel a goroutine:
 
 Create a Context with Cancellation: Use context.WithCancel to create a context that can be canceled.
@@ -327,9 +329,7 @@ Cancel Function: Call the cancel function to signal the goroutine to stop its wo
 Using the context package to manage goroutine lifecycles helps ensure that goroutines can exit gracefully when they are no longer needed, preventing resource leaks and improving the robustness of your concurrent programs.
 
 
-**
-What are goroutine leaks
-**
+**What are goroutine leaks**
 
 
 Goroutine leaks occur when goroutines are started but never terminate, leading to resource exhaustion and potential application crashes. This is analogous to memory leaks in other programming languages, where resources are allocated but never released. In the context of Go, goroutine leaks can cause the application to consume excessive memory and CPU resources, leading to degraded performance or even failure.
@@ -371,7 +371,7 @@ func main() {
 }
 ```
 
-n this example, the goroutine sending messages to the channel ch will block indefinitely because there is no receiver.
+In this example, the goroutine sending messages to the channel ch will block indefinitely because there is no receiver.
 
 Detecting and Preventing Goroutine Leaks
 Use Context for Cancellation:
@@ -398,6 +398,7 @@ By following these practices, you can avoid goroutine leaks and ensure that your
 
 
 
+**Generics**
 
 Generics in Go were introduced in Go 1.18, allowing functions and types to operate on different data types while maintaining type safety. Generics enable you to write more flexible and reusable code without sacrificing the performance and safety that Go is known for.
 
@@ -409,8 +410,7 @@ Type Constraints: Constraints specify what types are permissible for the type pa
 Basic Syntax of Generics in Go
 Here’s a basic example of a generic function:
 
-go
-Copy code
+```
 package main
 
 import "fmt"
@@ -426,11 +426,13 @@ func main() {
     Print("Hello, Go!") // Prints a string
     Print(3.14)         // Prints a float
 }
+```
+
 Example of Generics with Type Constraints
+
 You can specify type constraints using interfaces to restrict the types that a type parameter can accept. Here's an example where we define a function that adds two numbers of a generic numeric type:
 
-go
-Copy code
+```
 package main
 
 import (
@@ -453,10 +455,12 @@ func main() {
 	fmt.Println(Add(10.5, 20.5))    // float64
 	fmt.Println(Add(int64(5), 10))  // int64
 }
-Key Points:
-Type Parameters: Defined within [], like [T any], where T is the type parameter and any is a built-in constraint allowing any type.
+```
 
-Type Constraints: Constraints like Number in the example restrict what types the type parameters can be. You can define constraints using interfaces.
+Key Points:
+**Type Parameters**: Defined within [], like [T any], where T is the type parameter and any is a built-in constraint allowing any type.
+
+**Type Constraints**: Constraints like Number in the example restrict what types the type parameters can be. You can define constraints using interfaces.
 
 Function and Structs: Generics can be used in both functions and structs, making it easier to write reusable components.
 
@@ -467,8 +471,7 @@ Performance: Generics are optimized by the Go compiler, typically offering bette
 Example: Generic Stack Implementation
 Here's a simple generic stack implementation:
 
-go
-Copy code
+```
 package main
 
 import "fmt"
@@ -507,6 +510,7 @@ func main() {
 	stringStack.Push("Generics")
 	fmt.Println(stringStack.Pop()) // Output: Generics true
 }
+```
 This stack implementation demonstrates the power of generics, allowing the Stack to work with any data type while ensuring type safety.
 
 Generics enhance the flexibility of Go, making it easier to write cleaner, more maintainable code without sacrificing performance or type safety.
@@ -516,8 +520,7 @@ Generics enhance the flexibility of Go, making it easier to write cleaner, more 
 
 
 
-**
-Interfaces**
+**Interfaces**
 
 Interfaces in Go are a powerful feature that allows you to define the behavior of objects without specifying their exact type. Interfaces enable you to write flexible, reusable, and decoupled code by defining a set of methods that a type must implement.
 
@@ -531,7 +534,7 @@ Polymorphism: Interfaces enable polymorphism, allowing you to write functions th
 Basic Interface Definition
 Here is an example of defining and using a basic interface in Go:
 
-
+```
 package main
 
 import "fmt"
@@ -574,6 +577,7 @@ func main() {
 		fmt.Println(animal.Speak())
 	}
 }
+```
 Explanation:
 Interface Definition: The Speaker interface defines a single method Speak() string.
 Implicit Implementation: The Dog and Cat structs implement the Speak method. Go automatically recognizes that these types implement the Speaker interface.
@@ -600,7 +604,7 @@ func main() {
 
 Type assertions allow you to extract the concrete value from an interface variable:
 
-
+```
 package main
 
 import "fmt"
@@ -616,10 +620,11 @@ func main() {
 		fmt.Println("Type assertion failed")
 	}
 }
+```
 Using Interfaces with Structs and Functions
 Here's an example of using interfaces to define behavior across different types:
 
-
+```
 package main
 
 import "fmt"
@@ -661,6 +666,7 @@ func main() {
 	printArea(c) // Output: Area: 78.50
 	printArea(r) // Output: Area: 24.00
 }
+```
 Key Points:
 Interfaces are Contracts: They define what methods a type must have but not how they are implemented.
 Implicit Satisfaction: Types do not need to declare they implement an interface; they simply need to have the required methods.
@@ -676,8 +682,8 @@ Implementing a stack using an interface in Go allows you to create a flexible, r
 
 Here's an example of implementing a stack using interfaces in Go:
 
-**Stack Implementation Using Interfaces
-**
+**Stack Implementation Using Interfaces**
+```
 package main
 
 import (
@@ -756,6 +762,7 @@ func main() {
 		fmt.Println("Error:", err) // Output: Error: stack is empty
 	}
 }
+```
 Explanation
 Interface Definition (Stack):
 
